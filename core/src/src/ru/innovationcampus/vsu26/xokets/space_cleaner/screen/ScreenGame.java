@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 
 public class ScreenGame extends ScreenAdapter {
     private final MyGdxGame myGdxGame;
@@ -17,6 +18,7 @@ public class ScreenGame extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+
         myGdxGame.camera.update();
         ScreenUtils.clear(Color.BLACK);
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);

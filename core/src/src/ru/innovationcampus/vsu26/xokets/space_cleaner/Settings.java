@@ -4,4 +4,8 @@ public enum Settings {;
     // Device settings
     public static final int SCREEN_WIDTH = 720;
     public static final int SCREEN_HEIGHT = 1280;
+    public static final float FIXED_TIME_STEP = (float) 1/60;
+    public static final int VELOCITY_ITERATIONS = 6;
+    public static final int POSITION_ITERATIONS = 6;
+
 }
