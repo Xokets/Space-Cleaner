@@ -1,7 +1,9 @@
 package src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
@@ -22,12 +24,18 @@ public class ScreenGame extends ScreenAdapter {
     }
     @Override
     public void show() {
+        ship.setY(0);
+        ship.setBounce(Settings.SCREEN_WIDTH, (float) Settings.SCREEN_HEIGHT / 2, 0, 0);
     }
 
     @Override
     public void render(float delta) {
+        if (Gdx.input.isTouched()) {
+            myGdxGame.touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        }
+        System.out.println(ship.getY());
+        ship.move(myGdxGame.touch);
         myGdxGame.stepWorld(delta);
-
 
         myGdxGame.camera.update();
         ScreenUtils.clear(Color.BLACK);

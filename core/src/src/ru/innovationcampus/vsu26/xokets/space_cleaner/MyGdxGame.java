@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -17,6 +18,7 @@ public class MyGdxGame extends Game {
 	public Batch batch;
 	public Screen screenGame;
 	public float accumulator;
+	public Vector3 touch;
 	
 	@Override
 	public void create () {
