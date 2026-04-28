@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 
@@ -16,7 +17,7 @@ public class ShipObject extends GameObject {
 
     private static final String TEXTURE_PATH = "Ship/";
 
-    public ShipObject(String texturePath, float width, float height, float x, float y, World world) {
+    public ShipObject(@NotNull String texturePath, @Nullable float width, @Nullable float height, @Nullable float x, @Nullable float y, @NotNull World world) {
         super(MAIN_TEXTURE_PATH + TEXTURE_PATH + texturePath, width, height, x, y, world);
         body.setLinearDamping(10);
     }

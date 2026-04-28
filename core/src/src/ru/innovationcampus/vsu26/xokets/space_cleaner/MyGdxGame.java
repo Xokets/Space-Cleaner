@@ -12,6 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenGame;
 
 public class MyGdxGame extends Game {
@@ -21,6 +23,7 @@ public class MyGdxGame extends Game {
 	public Screen screenGame;
 	public float accumulator;
 	public Vector3 touch;
+	public static Random rand = new Random();
 	
 	@Override
 	public void create() {

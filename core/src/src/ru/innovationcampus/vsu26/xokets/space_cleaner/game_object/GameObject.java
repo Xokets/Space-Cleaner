@@ -9,6 +9,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 
 
@@ -19,7 +22,7 @@ public abstract class GameObject implements Disposable {
     protected Texture texture;
     protected Body body;
 
-    public GameObject(String texturePath, float width, float height, float x, float y, World world) {
+    public GameObject(@NotNull String texturePath, @Nullable float width,@Nullable float height,@Nullable float x,@Nullable float y, @NotNull World world) {
         this.width = width;
         this.height = height;
 
@@ -27,7 +30,7 @@ public abstract class GameObject implements Disposable {
         body = createBody(x, y, world);
     }
 
-    public void draw(Batch batch) {
+    public void draw(@NotNull Batch batch) {
         batch.draw(texture, getX(), getY(), width, height);
     }
 
