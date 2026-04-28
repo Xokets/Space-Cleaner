@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 
 public class ShipObject extends GameObject {
@@ -16,27 +18,28 @@ public class ShipObject extends GameObject {
 
     public ShipObject(String texturePath, float width, float height, float x, float y, World world) {
         super(MAIN_TEXTURE_PATH + TEXTURE_PATH + texturePath, width, height, x, y, world);
+        body.setLinearDamping(10);
     }
 
     public void setBounce (float maxX, float maxY, float minX, float minY) {
         this.maxX = maxX;
-        this.maxY = maxY + height / 2;
-        this.minX = minX;
-        this.minY = minY;
+        this.maxY = maxY - height / 2;
+        this.minX = minX - width;
+        this.minY = minY - height / 2;
     }
 
     private void putInFrame() {
         if (getY() > maxY) {
             setY(maxY);
         }
-        if (getX() < minX) {
+        if (getY() < minY) {
+            setY(minY);
+        }
+        if (getX() > maxX) {
             setX(minX);
         }
-        if (getX() > maxY) {
+        if (getX() < minX) {
             setX(maxX);
-        }
-        if (getY() < minY) {
-            setY(0);
         }
     }
 
@@ -47,12 +50,8 @@ public class ShipObject extends GameObject {
     }
 
     public void move(Vector3 vector3) {
-        if (vector3 == null) {
-            return;
-        }
-        float fx = (vector3.x - getX()) * Settings.SHIP_FORCE_RATIO;
-        float fy = (vector3.y - getY()) * Settings.SHIP_FORCE_RATIO;
-        body.applyForceToCenter(fx, fy, true);
+        if (vector3 == null) return;
+        body.applyForceToCenter(new Vector2((vector3.x - (getX() + width / 2)) * Settings.SHIP_FORCE_RATIO, (vector3.y - (getY() + height / 2)) * Settings.SHIP_FORCE_RATIO), true);
     }
     @Override
     public void setY(float y) {

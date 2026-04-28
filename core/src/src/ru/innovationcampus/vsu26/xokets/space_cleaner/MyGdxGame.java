@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 
+import org.jetbrains.annotations.Nullable;
+
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenGame;
 
 public class MyGdxGame extends Game {
@@ -21,7 +23,7 @@ public class MyGdxGame extends Game {
 	public Vector3 touch;
 	
 	@Override
-	public void create () {
+	public void create() {
 		Box2D.init();
 		world = new World(new Vector2(0, 0), true);
 		screenGame = new ScreenGame(this);
@@ -37,7 +39,7 @@ public class MyGdxGame extends Game {
 		batch.dispose();
 	}
 
-	public void stepWorld(float delta) {
+	public void stepWorld(@Nullable float delta) {
 		accumulator += delta;
 		while (accumulator >= Settings.FIXED_TIME_STEP) {
 			world.step(Settings.FIXED_TIME_STEP, Settings.VELOCITY_ITERATIONS, Settings.POSITION_ITERATIONS);
