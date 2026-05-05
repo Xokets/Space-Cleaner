@@ -22,7 +22,7 @@ public abstract class GameObject implements Disposable {
     protected Texture texture;
     protected Body body;
 
-    public GameObject(@NotNull String texturePath, @Nullable float width,@Nullable float height,@Nullable float x,@Nullable float y, @NotNull World world) {
+    public GameObject(@NotNull String texturePath, float width, float height, float x, float y, @NotNull World world) {
         this.width = width;
         this.height = height;
 
@@ -30,8 +30,12 @@ public abstract class GameObject implements Disposable {
         body = createBody(x, y, world);
     }
 
+    public GameObject(@NotNull String texturePath, float width, float height, @NotNull World world) {
+        this(texturePath, width, height, 0f, 0f, world);
+    }
+
     public void draw(@NotNull Batch batch) {
-        batch.draw(texture, getX(), getY(), width, height);
+        batch.draw(texture, getX() - width / 2, getY() - height / 2, width, height);
     }
 
     @Override
@@ -75,5 +79,25 @@ public abstract class GameObject implements Disposable {
 
         body.setTransform(x * Settings.SCALE, y * Settings.SCALE, 0f);
         return body;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 }

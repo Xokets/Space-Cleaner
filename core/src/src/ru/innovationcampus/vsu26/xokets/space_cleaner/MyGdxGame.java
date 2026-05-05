@@ -37,12 +37,12 @@ public class MyGdxGame extends Game {
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		screenGame.dispose();
 		batch.dispose();
 	}
 
-	public void stepWorld(@Nullable float delta) {
+	public void stepWorld(float delta) {
 		accumulator += delta;
 		while (accumulator >= Settings.FIXED_TIME_STEP) {
 			world.step(Settings.FIXED_TIME_STEP, Settings.VELOCITY_ITERATIONS, Settings.POSITION_ITERATIONS);
