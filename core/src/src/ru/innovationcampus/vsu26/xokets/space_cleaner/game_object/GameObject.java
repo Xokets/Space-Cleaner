@@ -21,17 +21,20 @@ public abstract class GameObject implements Disposable {
     protected float height;
     protected Texture texture;
     protected Body body;
+    protected short cBits;
 
-    public GameObject(@NotNull String texturePath, float width, float height, float x, float y, @NotNull World world) {
+    public GameObject(@NotNull String texturePath, float width, float height, float x, float y, @NotNull World world, short cBits) {
+        this.cBits = cBits;
         this.width = width;
         this.height = height;
+
 
         texture = new Texture(texturePath);
         body = createBody(x, y, world);
     }
 
-    public GameObject(@NotNull String texturePath, float width, float height, @NotNull World world) {
-        this(texturePath, width, height, 0f, 0f, world);
+    public GameObject(@NotNull String texturePath, float width, float height, @NotNull World world, short cBits) {
+        this(texturePath, width, height, 0f, 0f, world, cBits);
     }
 
     public void draw(@NotNull Batch batch) {
@@ -70,11 +73,12 @@ public abstract class GameObject implements Disposable {
         circleShape.setRadius(Math.max(width, height) * Settings.SCALE / 2f);
 
         FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.filter.categoryBits = cBits;
         fixtureDef.shape = circleShape;
         fixtureDef.density = 0.1f;
         fixtureDef.friction = 1f;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
         circleShape.dispose();
 
         body.setTransform(x * Settings.SCALE, y * Settings.SCALE, 0f);
@@ -100,4 +104,5 @@ public abstract class GameObject implements Disposable {
     public void setHeight(float height) {
         this.height = height;
     }
+    public abstract void hit();
 }

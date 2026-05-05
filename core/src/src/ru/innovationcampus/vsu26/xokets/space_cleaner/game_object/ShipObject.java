@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 
 public class ShipObject extends GameObject {
@@ -16,12 +17,14 @@ public class ShipObject extends GameObject {
     private float maxX, maxY;
     private float minX, minY;
     private long lastShotTime;
+    private short hitPoint;
 
     private static final String TEXTURE_PATH = "Ship/";
 
     public ShipObject(@NotNull String texturePath, float width, float height, @NotNull World world) {
-        super(MAIN_TEXTURE_PATH + TEXTURE_PATH + texturePath, width, height, world);
+        super(MAIN_TEXTURE_PATH + TEXTURE_PATH + texturePath, width, height, world, Settings.SHIP_BIT);
         body.setLinearDamping(10);
+        hitPoint = Resources.SHIP_HIT_POINT_COUNT;
     }
 
     public void setBounce(float maxX, float maxY, float minX, float minY) {
@@ -63,5 +66,14 @@ public class ShipObject extends GameObject {
             return true;
         }
         return false;
+    }
+
+    public boolean isAlive() {
+        return hitPoint > 0;
+    }
+
+    @Override
+    public void hit() {
+        hitPoint -= 1;
     }
 }

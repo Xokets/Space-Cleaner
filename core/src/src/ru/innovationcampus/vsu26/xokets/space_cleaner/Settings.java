@@ -18,4 +18,7 @@ public class Settings {
     public static final int BULLET_HEIGHT = 45;
     public static final int BULLET_VELOCITY = 200;
     public static final long SHOOTING_COOL_DOWN = 1000;
+    public static final short TRASH_BIT = 1;
+    public static final short SHIP_BIT = 2;
+    public static final short BULLET_BIT = 4;
 }

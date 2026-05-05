@@ -105,8 +105,11 @@ public class ScreenGame extends ScreenAdapter {
     }
 
     private void updateObject() {
+        if (!ship.isAlive()) {
+            System.out.println("Game over!");
+        }
         for (int i = 0; i < trashArray.size(); i++) {
-            if (!trashArray.get(i).isInFrame()) {
+            if (!trashArray.get(i).isInFrame() || !trashArray.get(i).isAlive()) {
                 myGdxGame.world.destroyBody(trashArray.get(i).getBody());
                 trashArray.get(i).dispose();
                 trashArray.remove(i--);
