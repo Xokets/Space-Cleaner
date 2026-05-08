@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenGame;
 
@@ -43,10 +45,6 @@ public class MyGdxGame extends Game {
 	}
 
 	public void stepWorld(float delta) {
-		accumulator += delta;
-		while (accumulator >= Settings.FIXED_TIME_STEP) {
-			world.step(Settings.FIXED_TIME_STEP, Settings.VELOCITY_ITERATIONS, Settings.POSITION_ITERATIONS);
-			accumulator -= Settings.FIXED_TIME_STEP;
-		}
+		world.step(delta, Settings.VELOCITY_ITERATIONS, Settings.POSITION_ITERATIONS);
 	}
 }

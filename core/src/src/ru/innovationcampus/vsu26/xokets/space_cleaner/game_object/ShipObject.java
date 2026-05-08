@@ -23,7 +23,7 @@ public class ShipObject extends GameObject {
 
     public ShipObject(@NotNull String texturePath, float width, float height, @NotNull World world) {
         super(MAIN_TEXTURE_PATH + TEXTURE_PATH + texturePath, width, height, world, Settings.SHIP_BIT);
-        body.setLinearDamping(10);
+        body.setLinearDamping(20);
         hitPoint = Resources.SHIP_HIT_POINT_COUNT;
     }
 
@@ -57,7 +57,7 @@ public class ShipObject extends GameObject {
 
     public void move(@Nullable Vector3 vector3) {
         if (vector3 == null) return;
-        body.applyForceToCenter(new Vector2((vector3.x - (getX() + width / 2)) * Settings.SHIP_FORCE_RATIO, (vector3.y - (getY() + height / 2)) * Settings.SHIP_FORCE_RATIO), true);
+        body.applyForceToCenter(new Vector2((vector3.x - getX()) * Settings.SHIP_FORCE_RATIO, (vector3.y - getY()) * Settings.SHIP_FORCE_RATIO), true);
     }
 
     public boolean needToShoot() {

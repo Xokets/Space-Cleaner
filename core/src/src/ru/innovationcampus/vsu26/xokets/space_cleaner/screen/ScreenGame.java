@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.ImageView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MovingBackgroundView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
@@ -26,7 +28,8 @@ public class ScreenGame extends ScreenAdapter {
     private ContactManager contactManager;
     private final ArrayList<TrashObject> trashArray = new ArrayList<>();
     private final ArrayList<BulletObject> bulletArray = new ArrayList<>();
-
+    private MovingBackgroundView background;
+    private ImageView topBlackOutView;
 
     public ScreenGame(@NotNull MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -42,6 +45,9 @@ public class ScreenGame extends ScreenAdapter {
         );
         ship.setY((float) (Settings.SCREEN_HEIGHT / 2 - Resources.SHIP_HEIGHT / 2));
         ship.setX((float) Settings.SCREEN_WIDTH / 2);
+        background = new MovingBackgroundView(Resources.BACKGROUND_INTERNAL_TEXTURE_PATH);
+        topBlackOutView = new ImageView(0, 0, Settings.SCREEN_WIDTH, 50, Resources.BLACKOUT_TOP_INTERNAL_TEXTURE_PATH);
+        topBlackOutView.setY(Settings.SCREEN_HEIGHT - topBlackOutView.getHeight());
     }
     @Override
     public void show() {
@@ -51,7 +57,9 @@ public class ScreenGame extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        updateObject();
+
+        updateObject(delta);
+        cleanObject();
         spawnObject();
         handleInput();
         draw();
@@ -62,6 +70,9 @@ public class ScreenGame extends ScreenAdapter {
     public void dispose() {
         ship.dispose();
         for (TrashObject trashObject : trashArray) trashObject.dispose();
+        for (BulletObject bulletObject : bulletArray) bulletObject.dispose();
+        background.dispose();
+        topBlackOutView.dispose();
     }
 
     private void handleInput() {
@@ -76,9 +87,11 @@ public class ScreenGame extends ScreenAdapter {
         ScreenUtils.clear(Color.BLACK);
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.batch.begin();
+        background.draw(myGdxGame.batch);
         for (TrashObject trashObject : trashArray) trashObject.draw(myGdxGame.batch);
         for (BulletObject bulletObject : bulletArray) bulletObject.draw(myGdxGame.batch);
         ship.draw(myGdxGame.batch);
+        topBlackOutView.draw(myGdxGame.batch);
         myGdxGame.batch.end();
     }
 
@@ -107,7 +120,12 @@ public class ScreenGame extends ScreenAdapter {
         }
     }
 
-    private void updateObject() {
+    private void updateObject(float delta) {
+        background.move(delta);
+    }
+
+    private void cleanObject() {
+
         if (!ship.isAlive()) {
             System.out.println("Game over!");
             //FIXME
