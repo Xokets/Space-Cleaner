@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
@@ -73,12 +74,13 @@ public abstract class GameObject implements Disposable {
         circleShape.setRadius(Math.max(width, height) * Settings.SCALE / 2f);
 
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.filter.categoryBits = cBits;
         fixtureDef.shape = circleShape;
         fixtureDef.density = 0.1f;
         fixtureDef.friction = 1f;
 
-        body.createFixture(fixtureDef).setUserData(this);
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
+        fixture.getFilterData().categoryBits = cBits;
         circleShape.dispose();
 
         body.setTransform(x * Settings.SCALE, y * Settings.SCALE, 0f);

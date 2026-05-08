@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
@@ -22,6 +23,7 @@ public class ScreenGame extends ScreenAdapter {
     private final MyGdxGame myGdxGame;
     private ShipObject ship;
     private GameSession gameSession;
+    private ContactManager contactManager;
     private final ArrayList<TrashObject> trashArray = new ArrayList<>();
     private final ArrayList<BulletObject> bulletArray = new ArrayList<>();
 
@@ -29,6 +31,7 @@ public class ScreenGame extends ScreenAdapter {
     public ScreenGame(@NotNull MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
         gameSession = new GameSession();
+        contactManager = new ContactManager(myGdxGame.world);
         ship = new ShipObject(
 
                 Resources.SHIP_TEXTURE_NAME,
@@ -107,6 +110,8 @@ public class ScreenGame extends ScreenAdapter {
     private void updateObject() {
         if (!ship.isAlive()) {
             System.out.println("Game over!");
+            //FIXME
+            throw new RuntimeException("Game over");
         }
         for (int i = 0; i < trashArray.size(); i++) {
             if (!trashArray.get(i).isInFrame() || !trashArray.get(i).isAlive()) {
