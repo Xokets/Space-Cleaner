@@ -76,4 +76,8 @@ public class ShipObject extends GameObject {
     public void hit() {
         hitPoint -= 1;
     }
+
+    public short getHitPoint() {
+        return hitPoint;
+    }
 }

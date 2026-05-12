@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.ImageView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.LiveView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MovingBackgroundView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
@@ -30,6 +31,7 @@ public class ScreenGame extends ScreenAdapter {
     private final ArrayList<BulletObject> bulletArray = new ArrayList<>();
     private MovingBackgroundView background;
     private ImageView topBlackOutView;
+    private LiveView liveView;
 
     public ScreenGame(@NotNull MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -48,6 +50,9 @@ public class ScreenGame extends ScreenAdapter {
         background = new MovingBackgroundView(Resources.BACKGROUND_INTERNAL_TEXTURE_PATH);
         topBlackOutView = new ImageView(0, 0, Settings.SCREEN_WIDTH, 50, Resources.BLACKOUT_TOP_INTERNAL_TEXTURE_PATH);
         topBlackOutView.setY(Settings.SCREEN_HEIGHT - topBlackOutView.getHeight());
+        liveView = new LiveView(0, 0);
+        liveView.setY(Settings.SCREEN_HEIGHT - (liveView.getHeight()));
+        liveView.setX(liveView.getWidth());
     }
     @Override
     public void show() {
@@ -73,6 +78,7 @@ public class ScreenGame extends ScreenAdapter {
         for (BulletObject bulletObject : bulletArray) bulletObject.dispose();
         background.dispose();
         topBlackOutView.dispose();
+        liveView.dispose();
     }
 
     private void handleInput() {
@@ -92,6 +98,7 @@ public class ScreenGame extends ScreenAdapter {
         for (BulletObject bulletObject : bulletArray) bulletObject.draw(myGdxGame.batch);
         ship.draw(myGdxGame.batch);
         topBlackOutView.draw(myGdxGame.batch);
+        liveView.draw(myGdxGame.batch);
         myGdxGame.batch.end();
     }
 
@@ -122,6 +129,7 @@ public class ScreenGame extends ScreenAdapter {
 
     private void updateObject(float delta) {
         background.move(delta);
+        liveView.setLive(ship.getHitPoint());
     }
 
     private void cleanObject() {
