@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.GameObject;
 
 public class ContactManager {
@@ -25,7 +26,6 @@ public class ContactManager {
                         || (cDef2 == Settings.TRASH_BIT && (cDef == Settings.BULLET_BIT || cDef == Settings.SHIP_BIT))) {
                     ((GameObject) fixA.getUserData()).hit();
                     ((GameObject) fixB.getUserData()).hit();
-                    System.out.println("test");
                 }
             }
 

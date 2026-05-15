@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Disposable;
@@ -13,6 +13,12 @@ public abstract class View implements Disposable {
     public View(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public View(float x, float y, float width, float height) {
+        this(x, y);
+        this.width = width;
+        this.height = height;
     }
 
     public abstract boolean isHit(float tx, float ty);

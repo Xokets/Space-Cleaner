@@ -6,6 +6,8 @@ public class Resources {
     public static final String SHIP_TEXTURE_NAME = "ship.png";
     public static final String BACKGROUND_INTERNAL_TEXTURE_PATH = "Texture/Background/background.png";
     public static final String BLACKOUT_TOP_INTERNAL_TEXTURE_PATH = "Texture/Blackout/blackout_top.png";
+    public static final String INTERFACE_BUTTON_PAUSE_INTERNAL_TEXTURE_PATH = "Texture/Interface/Button/pause_icon.png";
+    public static final String FONT1_INTERNAL_PATH = "Font/font1.ttf";
     public static final short SHIP_HIT_POINT_COUNT = 3;
     public static final String INTERFACE_LIVE_INTERNAL_TEXTURE_PATH = "Texture/Interface/life.png";
 }

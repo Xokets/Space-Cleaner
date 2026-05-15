@@ -1,7 +1,9 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 
 public class LiveView extends View {
     private static final int LIVE_PADDING = 6;

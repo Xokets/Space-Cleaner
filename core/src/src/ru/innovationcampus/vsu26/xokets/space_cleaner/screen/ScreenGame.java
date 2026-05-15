@@ -10,14 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.ContactManager;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.ImageView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.LiveView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MovingBackgroundView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ButtonView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ImageView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.LiveView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.MovingBackgroundView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.TextView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.BulletObject;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.ShipObject;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.TrashObject;
@@ -31,7 +33,10 @@ public class ScreenGame extends ScreenAdapter {
     private final ArrayList<BulletObject> bulletArray = new ArrayList<>();
     private MovingBackgroundView background;
     private ImageView topBlackOutView;
+    private TextView scoreTextView;
     private LiveView liveView;
+    private ButtonView pauseButton;
+    private int point;
 
     public ScreenGame(@NotNull MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -56,8 +61,14 @@ public class ScreenGame extends ScreenAdapter {
     }
     @Override
     public void show() {
+        point = 0;
+        scoreTextView = new TextView(Settings.SCREEN_WIDTH - 400, Settings.SCREEN_HEIGHT - 60, myGdxGame.font1, "Count: " + point);
+
         gameSession.startGame();
         ship.setBounce(Settings.SCREEN_WIDTH, (float) Settings.SCREEN_HEIGHT / 2, 0, 0);
+        pauseButton = new ButtonView(0, 0, 40, 40, Resources.INTERFACE_BUTTON_PAUSE_INTERNAL_TEXTURE_PATH);
+        pauseButton.setX(Settings.SCREEN_WIDTH - pauseButton.getWidth() - 6);
+        pauseButton.setY(Settings.SCREEN_HEIGHT - pauseButton.getHeight() - 6);
     }
 
     @Override
@@ -69,6 +80,7 @@ public class ScreenGame extends ScreenAdapter {
         handleInput();
         draw();
         myGdxGame.stepWorld(delta);
+        scoreTextView.setText("Count: " + point);
     }
 
     @Override
@@ -79,6 +91,8 @@ public class ScreenGame extends ScreenAdapter {
         background.dispose();
         topBlackOutView.dispose();
         liveView.dispose();
+        scoreTextView.dispose();
+        pauseButton.dispose();
     }
 
     private void handleInput() {
@@ -99,6 +113,8 @@ public class ScreenGame extends ScreenAdapter {
         ship.draw(myGdxGame.batch);
         topBlackOutView.draw(myGdxGame.batch);
         liveView.draw(myGdxGame.batch);
+        scoreTextView.draw(myGdxGame.batch);
+        pauseButton.draw(myGdxGame.batch);
         myGdxGame.batch.end();
     }
 
