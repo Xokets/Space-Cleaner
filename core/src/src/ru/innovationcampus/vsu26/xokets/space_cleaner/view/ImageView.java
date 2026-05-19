@@ -2,6 +2,9 @@ package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector3;
+
+import org.jetbrains.annotations.Nullable;
 
 public class ImageView extends View {
 
@@ -14,7 +17,7 @@ public class ImageView extends View {
     }
 
     @Override
-    public boolean isHit(float tx, float ty) {
+    public boolean isHit(@Nullable Vector3 vector3) {
         return false;
     }
 

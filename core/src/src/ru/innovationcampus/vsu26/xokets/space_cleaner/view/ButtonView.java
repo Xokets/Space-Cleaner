@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Vector3;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +39,7 @@ public class ButtonView extends View {
     public void draw(Batch batch) {
         batch.draw(texture, x, y, width, height);
         if (font == null) return;
-        font.draw(batch, text, x, y);
+        font.draw(batch, text, textX, textY);
     }
 
     @Override
@@ -46,10 +47,5 @@ public class ButtonView extends View {
         texture.dispose();
         if (font == null) return;
         font.dispose();
-    }
-
-    @Override
-    public boolean isHit(float tx, float ty) {
-        return false;
     }
 }

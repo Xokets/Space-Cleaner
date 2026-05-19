@@ -3,6 +3,7 @@ package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Vector3;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,11 +20,6 @@ public class TextView extends View {
         width = glyphLayout.width;
         height = glyphLayout.height;
 
-    }
-
-    @Override
-    public boolean isHit(float tx, float ty) {
-        return false;
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameState;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ButtonView;
@@ -33,9 +34,13 @@ public class ScreenGame extends ScreenAdapter {
     private final ArrayList<BulletObject> bulletArray = new ArrayList<>();
     private MovingBackgroundView background;
     private ImageView topBlackOutView;
+    private ImageView fullBlackOutView;
     private TextView scoreTextView;
+    private TextView pauseTextView;
     private LiveView liveView;
     private ButtonView pauseButton;
+    private ButtonView homeButton;
+    private ButtonView continueButton;
     private int point;
 
     public ScreenGame(@NotNull MyGdxGame myGdxGame) {
@@ -58,6 +63,12 @@ public class ScreenGame extends ScreenAdapter {
         liveView = new LiveView(0, 0);
         liveView.setY(Settings.SCREEN_HEIGHT - (liveView.getHeight()));
         liveView.setX(liveView.getWidth());
+        fullBlackOutView = new ImageView(0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT, Resources.BLACKOUT_FULL_INTERNAL_TEXTURE_PATH);
+        pauseTextView = new TextView(0, 0, myGdxGame.font1, "Pause");
+        pauseTextView.setX((float) Settings.SCREEN_WIDTH / 2 - pauseTextView.getWidth() / 2);
+        pauseTextView.setY((float) Settings.SCREEN_HEIGHT / 2 - pauseTextView.getHeight() / 2);
+        homeButton = new ButtonView((float) Settings.SCREEN_WIDTH / 4, (float) Settings.SCREEN_HEIGHT / 2, 100, 100, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Home");
+        continueButton = new ButtonView((float) Settings.SCREEN_WIDTH - (float) Settings.SCREEN_WIDTH / 4, (float) Settings.SCREEN_HEIGHT / 2, 100, 100, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Continue");
     }
     @Override
     public void show() {
@@ -74,12 +85,14 @@ public class ScreenGame extends ScreenAdapter {
     @Override
     public void render(float delta) {
 
-        updateObject(delta);
-        cleanObject();
-        spawnObject();
+        if (gameSession.getState() == GameState.RUNNING) {
+            updateObject(delta);
+            cleanObject();
+            spawnObject();
+            myGdxGame.stepWorld(delta);
+        }
         handleInput();
         draw();
-        myGdxGame.stepWorld(delta);
         scoreTextView.setText("Count: " + point);
     }
 
@@ -93,13 +106,39 @@ public class ScreenGame extends ScreenAdapter {
         liveView.dispose();
         scoreTextView.dispose();
         pauseButton.dispose();
+        fullBlackOutView.dispose();
+        continueButton.dispose();
+        homeButton.dispose();
+        pauseTextView.dispose();
     }
 
     private void handleInput() {
         if (Gdx.input.isTouched()) {
-            myGdxGame.touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            Vector3 touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            if (touch.y >= 0 && touch.y <= (float) Settings.SCREEN_HEIGHT / 2) {
+                myGdxGame.touch = touch;
+                return;
+            }
+
+            if (Gdx.input.justTouched()) {
+                myGdxGame.touch = touch;
+            }
         }
-        ship.move(myGdxGame.touch);
+        switch (gameSession.getState()) {
+            case RUNNING:
+                if (pauseButton.isHit(myGdxGame.touch)) {
+                    myGdxGame.touch = null;
+                    gameSession.pause();
+                }
+                ship.move(myGdxGame.touch);
+                break;
+            case PAUSED:
+                if (pauseButton.isHit(myGdxGame.touch)) {
+                    myGdxGame.touch = null;
+                    gameSession.resume();
+                }
+                break;
+        }
     }
 
     private void draw() {
@@ -115,6 +154,12 @@ public class ScreenGame extends ScreenAdapter {
         liveView.draw(myGdxGame.batch);
         scoreTextView.draw(myGdxGame.batch);
         pauseButton.draw(myGdxGame.batch);
+        if (gameSession.getState() == GameState.PAUSED) {
+            fullBlackOutView.draw(myGdxGame.batch);
+            pauseTextView.draw(myGdxGame.batch);
+            homeButton.draw(myGdxGame.batch);
+            continueButton.draw(myGdxGame.batch);
+        }
         myGdxGame.batch.end();
     }
 

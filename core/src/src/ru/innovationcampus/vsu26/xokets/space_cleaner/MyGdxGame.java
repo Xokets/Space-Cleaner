@@ -26,7 +26,6 @@ public class MyGdxGame extends Game {
 	public OrthographicCamera camera;
 	public Batch batch;
 	public Screen screenGame;
-	public float accumulator;
 	public Vector3 touch;
 	public static Random rand = new Random();
 	public BitmapFont font1;

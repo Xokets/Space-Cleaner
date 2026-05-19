@@ -1,7 +1,10 @@
 package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+
+import org.jetbrains.annotations.Nullable;
 
 public abstract class View implements Disposable {
 
@@ -21,7 +24,10 @@ public abstract class View implements Disposable {
         this.height = height;
     }
 
-    public abstract boolean isHit(float tx, float ty);
+    public boolean isHit(@Nullable Vector3 vector3) {
+        if (vector3 == null) return false;
+        return vector3.x >= x && vector3.x <= x + width && vector3.y >= y && vector3.y <= y + height;
+    }
 
     public abstract void draw(Batch batch);
 
