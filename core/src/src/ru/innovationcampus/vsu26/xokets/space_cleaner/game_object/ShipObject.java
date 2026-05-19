@@ -19,10 +19,9 @@ public class ShipObject extends GameObject {
     private long lastShotTime;
     private short hitPoint;
 
-    private static final String TEXTURE_PATH = "Ship/";
 
     public ShipObject(@NotNull String texturePath, float width, float height, @NotNull World world) {
-        super(MAIN_TEXTURE_PATH + TEXTURE_PATH + texturePath, width, height, world, Settings.SHIP_BIT);
+        super(texturePath, width, height, world, Settings.SHIP_BIT);
         body.setLinearDamping(20);
         hitPoint = Resources.SHIP_HIT_POINT_COUNT;
     }

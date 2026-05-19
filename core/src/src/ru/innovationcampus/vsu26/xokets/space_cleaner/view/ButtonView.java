@@ -26,8 +26,8 @@ public class ButtonView extends View {
         textWidth = glyphLayout.width;
         textHeight = glyphLayout.height;
 
-        textX = x + (width - textWidth) / 2;
-        textY = y + (height - textHeight) / 2;
+        setX(x);
+        setY(y);
     }
 
     public ButtonView(float x, float y, float width, float height, @NotNull String internalTexturePath) {
@@ -47,5 +47,17 @@ public class ButtonView extends View {
         texture.dispose();
         if (font == null) return;
         font.dispose();
+    }
+
+    @Override
+    public void setX(float x) {
+        super.setX(x);
+        textX = x + (width - textWidth) / 2;
+    }
+
+    @Override
+    public void setY(float y) {
+        super.setY(y);
+        textY = y + height / 2 + textHeight / 2;
     }
 }

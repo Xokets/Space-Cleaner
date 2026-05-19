@@ -49,7 +49,7 @@ public class ScreenGame extends ScreenAdapter {
         contactManager = new ContactManager(myGdxGame.world);
         ship = new ShipObject(
 
-                Resources.SHIP_TEXTURE_NAME,
+                Resources.SHIP_INTERNAL_TEXTURE_PATH,
                 Resources.SHIP_WIDTH,
                 Resources.SHIP_HEIGHT,
                 myGdxGame.world
@@ -66,16 +66,18 @@ public class ScreenGame extends ScreenAdapter {
         fullBlackOutView = new ImageView(0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT, Resources.BLACKOUT_FULL_INTERNAL_TEXTURE_PATH);
         pauseTextView = new TextView(0, 0, myGdxGame.font1, "Pause");
         pauseTextView.setX((float) Settings.SCREEN_WIDTH / 2 - pauseTextView.getWidth() / 2);
-        pauseTextView.setY((float) Settings.SCREEN_HEIGHT / 2 - pauseTextView.getHeight() / 2);
-        homeButton = new ButtonView((float) Settings.SCREEN_WIDTH / 4, (float) Settings.SCREEN_HEIGHT / 2, 100, 100, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Home");
-        continueButton = new ButtonView((float) Settings.SCREEN_WIDTH - (float) Settings.SCREEN_WIDTH / 4, (float) Settings.SCREEN_HEIGHT / 2, 100, 100, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Continue");
+        pauseTextView.setY((float) Settings.SCREEN_HEIGHT / 2 + 200);
+        homeButton = new ButtonView(0, (float) Settings.SCREEN_HEIGHT / 2, 150, 80, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Home");
+        homeButton.setX((float) Settings.SCREEN_WIDTH / 2 - homeButton.getWidth() / 2);
+        continueButton = new ButtonView(pauseTextView.getX(), homeButton.getY() - homeButton.getWidth() - 50, 150, 80, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Continue");
+        continueButton.setX((float) Settings.SCREEN_WIDTH / 2 - continueButton.getWidth() / 2);
     }
     @Override
     public void show() {
+        restartGame();
         point = 0;
         scoreTextView = new TextView(Settings.SCREEN_WIDTH - 400, Settings.SCREEN_HEIGHT - 60, myGdxGame.font1, "Count: " + point);
 
-        gameSession.startGame();
         ship.setBounce(Settings.SCREEN_WIDTH, (float) Settings.SCREEN_HEIGHT / 2, 0, 0);
         pauseButton = new ButtonView(0, 0, 40, 40, Resources.INTERFACE_BUTTON_PAUSE_INTERNAL_TEXTURE_PATH);
         pauseButton.setX(Settings.SCREEN_WIDTH - pauseButton.getWidth() - 6);
@@ -117,11 +119,11 @@ public class ScreenGame extends ScreenAdapter {
             Vector3 touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (touch.y >= 0 && touch.y <= (float) Settings.SCREEN_HEIGHT / 2) {
                 myGdxGame.touch = touch;
-                return;
             }
 
             if (Gdx.input.justTouched()) {
                 myGdxGame.touch = touch;
+                return;
             }
         }
         switch (gameSession.getState()) {
@@ -133,9 +135,13 @@ public class ScreenGame extends ScreenAdapter {
                 ship.move(myGdxGame.touch);
                 break;
             case PAUSED:
-                if (pauseButton.isHit(myGdxGame.touch)) {
+                if (continueButton.isHit(myGdxGame.touch)) {
                     myGdxGame.touch = null;
                     gameSession.resume();
+                }
+                if (homeButton.isHit(myGdxGame.touch)) {
+                    myGdxGame.touch = null;
+                    myGdxGame.setScreen(myGdxGame.screenMenu);
                 }
                 break;
         }
@@ -214,5 +220,21 @@ public class ScreenGame extends ScreenAdapter {
                 bulletArray.remove(i--);
             }
         }
+    }
+    private void restartGame() {
+        for (int i = 0; i < trashArray.size(); i++) {
+            myGdxGame.world.destroyBody(trashArray.get(i).getBody());
+            trashArray.get(i).dispose();
+            trashArray.remove(i--);
+        }
+        if (ship != null) {
+            myGdxGame.world.destroyBody(ship.getBody());
+            ship.dispose();
+            ship = new ShipObject(Resources.SHIP_INTERNAL_TEXTURE_PATH, Resources.SHIP_WIDTH, Resources.SHIP_HEIGHT, myGdxGame.world);
+            ship.setY((float) (Settings.SCREEN_HEIGHT / 2 - Resources.SHIP_HEIGHT / 2));
+            ship.setX((float) Settings.SCREEN_WIDTH / 2);
+        }
+        bulletArray.clear();
+        gameSession.startGame();
     }
 }

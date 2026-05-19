@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenGame;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenMenu;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.FontBuilder;
 
 public class MyGdxGame extends Game {
@@ -26,20 +27,26 @@ public class MyGdxGame extends Game {
 	public OrthographicCamera camera;
 	public Batch batch;
 	public Screen screenGame;
+	public Screen screenMenu;
 	public Vector3 touch;
 	public static Random rand = new Random();
 	public BitmapFont font1;
+	public BitmapFont font1Black;
+	public BitmapFont font1Large;
 	
 	@Override
 	public void create() {
 		Box2D.init();
 		font1 = FontBuilder.generate(24, Color.WHITE, Resources.FONT1_INTERNAL_PATH);
+		font1Black = FontBuilder.generate(24, Color.BLACK, Resources.FONT1_INTERNAL_PATH);
+		font1Large = FontBuilder.generate(48, Color.WHITE, Resources.FONT1_INTERNAL_PATH);
 		world = new World(new Vector2(0, 0), true);
 		screenGame = new ScreenGame(this);
+		screenMenu = new ScreenMenu(this);
 		camera = new OrthographicCamera(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
 		camera.setToOrtho(false);
 		batch = new SpriteBatch();
-		setScreen(screenGame);
+		setScreen(screenMenu);
 	}
 
 	@Override
