@@ -20,6 +20,8 @@ import java.util.concurrent.Executors;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenMenu;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenSettings;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.AudioManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.FontBuilder;
 
 public class MyGdxGame extends Game {
@@ -28,6 +30,8 @@ public class MyGdxGame extends Game {
 	public Batch batch;
 	public Screen screenGame;
 	public Screen screenMenu;
+	public Screen screenSettings;
+	public AudioManager audioManager;
 	public Vector3 touch;
 	public static Random rand = new Random();
 	public BitmapFont font1;
@@ -43,10 +47,12 @@ public class MyGdxGame extends Game {
 		world = new World(new Vector2(0, 0), true);
 		screenGame = new ScreenGame(this);
 		screenMenu = new ScreenMenu(this);
+		screenSettings = new ScreenSettings(this);
 		camera = new OrthographicCamera(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
 		camera.setToOrtho(false);
 		batch = new SpriteBatch();
 		setScreen(screenMenu);
+		audioManager = new AudioManager(world);
 	}
 
 	@Override

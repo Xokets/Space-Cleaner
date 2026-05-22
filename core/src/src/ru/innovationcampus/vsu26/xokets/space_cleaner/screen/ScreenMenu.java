@@ -58,7 +58,7 @@ public class ScreenMenu extends ScreenAdapter {
                 myGdxGame.setScreen(myGdxGame.screenGame);
             }
             if (settingsButton.isHit(myGdxGame.touch)) {
-                System.out.println("Go to settings");
+                myGdxGame.setScreen(myGdxGame.screenSettings);
             }
             if (exitButton.isHit(myGdxGame.touch)) {
                 Gdx.app.exit();

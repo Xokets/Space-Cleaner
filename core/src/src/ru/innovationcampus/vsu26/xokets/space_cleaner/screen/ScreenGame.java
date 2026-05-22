@@ -191,6 +191,7 @@ public class ScreenGame extends ScreenAdapter {
                     myGdxGame.world
 
             ));
+            if (myGdxGame.audioManager.isSoundOn) myGdxGame.audioManager.getShootSound().play();
         }
     }
 
@@ -207,7 +208,14 @@ public class ScreenGame extends ScreenAdapter {
             throw new RuntimeException("Game over");
         }
         for (int i = 0; i < trashArray.size(); i++) {
-            if (!trashArray.get(i).isInFrame() || !trashArray.get(i).isAlive()) {
+
+            boolean hasToBeDestroyed = !trashArray.get(i).isInFrame() || !trashArray.get(i).isAlive();
+
+            if (!trashArray.get(i).isAlive()) {
+                if (myGdxGame.audioManager.isSoundOn) myGdxGame.audioManager.getExplosionSound().play(0.25f);
+
+            }
+            if (hasToBeDestroyed) {
                 myGdxGame.world.destroyBody(trashArray.get(i).getBody());
                 trashArray.get(i).dispose();
                 trashArray.remove(i--);

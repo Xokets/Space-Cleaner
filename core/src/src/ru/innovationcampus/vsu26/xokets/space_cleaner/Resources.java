@@ -3,7 +3,9 @@ package src.ru.innovationcampus.vsu26.xokets.space_cleaner;
 public class Resources {
     public static final int SHIP_WIDTH = 100;
     public static final int SHIP_HEIGHT = 100;
-    public static final String SHIP_TEXTURE_NAME = "ship.png";
+    public static final String MUSIC_BACKGROUND_INTERNAL_TEXTURE_PATH = "Sound/Music/background_music.mp3";
+    public static final String SOUND_DESTROY_INTERNAL_TEXTURE_PATH = "Sound/Effects/destroy.mp3";
+    public static final String SOUND_SHOOT_INTERNAL_TEXTURE_PATH = "Sound/Effects/shoot.mp3";
     public static final String SHIP_INTERNAL_TEXTURE_PATH = "Texture/Ship/ship.png";
     public static final String BACKGROUND_INTERNAL_TEXTURE_PATH = "Texture/Background/background.png";
     public static final String BLACKOUT_TOP_INTERNAL_TEXTURE_PATH = "Texture/Blackout/blackout_top.png";
