@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects;
 
 import static src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame.rand;
 
@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Set;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 

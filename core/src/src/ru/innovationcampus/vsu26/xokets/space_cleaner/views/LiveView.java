@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.views;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -36,6 +36,7 @@ public class LiveView extends View {
 
     @Override
     public void dispose() {
+        if (texture == null) return;
         texture.dispose();
     }
 

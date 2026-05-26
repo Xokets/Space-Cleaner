@@ -12,16 +12,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenGame;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenMenu;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen.ScreenSettings;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.AudioManager;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens.ScreenGame;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens.ScreenMenu;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens.ScreenSettings;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.AudioManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.FontBuilder;
 
 public class MyGdxGame extends Game {
@@ -35,8 +31,8 @@ public class MyGdxGame extends Game {
 	public Vector3 touch;
 	public static Random rand = new Random();
 	public BitmapFont font1;
-	public BitmapFont font1Black;
 	public BitmapFont font1Large;
+	public BitmapFont font1Black;
 	
 	@Override
 	public void create() {
@@ -60,6 +56,8 @@ public class MyGdxGame extends Game {
 		screenGame.dispose();
 		batch.dispose();
 		font1.dispose();
+		font1Black.dispose();
+		font1Large.dispose();
 	}
 
 	public void stepWorld(float delta) {

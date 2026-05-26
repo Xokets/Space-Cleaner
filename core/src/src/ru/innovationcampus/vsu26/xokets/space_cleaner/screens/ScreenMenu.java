@@ -1,19 +1,16 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.FontBuilder;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ButtonView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.MovingBackgroundView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.TextView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.ButtonView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.MovingBackgroundView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.TextView;
 
 public class ScreenMenu extends ScreenAdapter {
     private final MyGdxGame myGdxGame;

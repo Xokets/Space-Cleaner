@@ -1,10 +1,9 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.views;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.math.Vector3;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,9 +43,8 @@ public class ButtonView extends View {
 
     @Override
     public void dispose() {
+        if (texture == null) return;
         texture.dispose();
-        if (font == null) return;
-        font.dispose();
     }
 
     @Override

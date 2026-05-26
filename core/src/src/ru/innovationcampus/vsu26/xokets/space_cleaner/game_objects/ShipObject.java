@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;

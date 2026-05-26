@@ -9,6 +9,9 @@ public class GameSession {
     private GameState state;
     private long lastPauseTime;
 
+    private int score;
+    private int destroyedTrashCount;
+
     public void startGame() {
         state = GameState.RUNNING;
         sessionTime = TimeUtils.millis();
@@ -28,6 +31,15 @@ public class GameSession {
         return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionTime) / 1000);
     }
 
+    public void incrementDestroyedTrashCount() {
+        destroyedTrashCount++;
+    }
+
+    public void updateScore() {
+        if (state == GameState.PAUSED || state == GameState.ENDED) return;
+        score = (int) (TimeUtils.millis() - sessionTime) / 100 + destroyedTrashCount * 100;
+    }
+
     public void pause() {
         state = GameState.PAUSED;
         lastPauseTime = TimeUtils.millis();
@@ -35,11 +47,15 @@ public class GameSession {
 
     public void resume() {
         long pauseTime = TimeUtils.millis() - lastPauseTime;
-        sessionTime -= pauseTime;
+        sessionTime += pauseTime;
         state = GameState.RUNNING;
     }
 
     public GameState getState() {
         return state;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

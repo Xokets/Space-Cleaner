@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.view;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.views;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector3;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TextView extends View {
     private BitmapFont font;
@@ -28,9 +29,13 @@ public class TextView extends View {
     }
 
     @Override
-    public void dispose() {
-        font.dispose();
+    public boolean isHit(@Nullable Vector3 vector3) {
+        if (vector3 == null) return false;
+        return vector3.x >= x && vector3.x <= x + width && vector3.y <= y && vector3.y >= y - height;
     }
+
+    @Override
+    public void dispose() {}
 
     public void setText(@NotNull String text) {
         this.text = text;

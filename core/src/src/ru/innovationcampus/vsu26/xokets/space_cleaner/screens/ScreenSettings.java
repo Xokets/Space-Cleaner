@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -8,10 +8,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ButtonView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ImageView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.MovingBackgroundView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.TextView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.MemoryManager;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.ButtonView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.ImageView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.MovingBackgroundView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.TextView;
 
 public class ScreenSettings extends ScreenAdapter {
     private final MyGdxGame myGdxGame;
@@ -37,12 +38,13 @@ public class ScreenSettings extends ScreenAdapter {
     @Override
     public void render(float delta) {
         handleInput();
+        musicCheckbox.setText("music: " + translateStateToText(MemoryManager.loadIsMusicOn()));
+        soundCheckbox.setText("sound: " + translateStateToText(MemoryManager.loadIsSoundOn()));
+
 
         myGdxGame.camera.update();
         ScreenUtils.clear(Color.WHITE);
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
-        musicCheckbox.setText("music: " + translateStateToText(myGdxGame.audioManager.isMusicOn));
-        soundCheckbox.setText("sound: " + translateStateToText(myGdxGame.audioManager.isSoundOn));
         myGdxGame.batch.begin();
 
 
@@ -53,6 +55,7 @@ public class ScreenSettings extends ScreenAdapter {
         soundCheckbox.draw(myGdxGame.batch);
         returnButton.draw(myGdxGame.batch);
         clearRecords.draw(myGdxGame.batch);
+
 
         myGdxGame.batch.end();
     }
@@ -68,11 +71,14 @@ public class ScreenSettings extends ScreenAdapter {
             System.out.println("cleared records!");
         }
         if (musicCheckbox.isHit(myGdxGame.touch)) {
-            myGdxGame.audioManager.isMusicOn = !myGdxGame.audioManager.isMusicOn;
+            MemoryManager.saveMusicSettings(!MemoryManager.loadIsMusicOn());
             myGdxGame.audioManager.updateMusicFlag();
+            musicCheckbox.setText("music: " + translateStateToText(MemoryManager.loadIsMusicOn()));
         }
         if (soundCheckbox.isHit(myGdxGame.touch)) {
-            myGdxGame.audioManager.isSoundOn = !myGdxGame.audioManager.isSoundOn;
+            MemoryManager.saveSoundSettings(!MemoryManager.loadIsSoundOn());
+            myGdxGame.audioManager.updateSoundFlag();
+            soundCheckbox.setText("sound: " + translateStateToText(MemoryManager.loadIsSoundOn()));
         }
         myGdxGame.touch = null;
     }

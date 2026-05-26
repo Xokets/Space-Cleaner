@@ -1,6 +1,7 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.World;
@@ -27,7 +28,8 @@ public class AudioManager {
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.2f);
 
-        backgroundMusic.play();
+        updateSoundFlag();
+        updateMusicFlag();
     }
 
     public Music getBackgroundMusic() {
@@ -43,7 +45,12 @@ public class AudioManager {
     }
 
     public void updateMusicFlag() {
+        isMusicOn = MemoryManager.loadIsMusicOn();
         if (isMusicOn) backgroundMusic.play();
         else backgroundMusic.stop();
+    }
+
+    public void updateSoundFlag() {
+        isSoundOn = MemoryManager.loadIsSoundOn();
     }
 }

@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.GameObject;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.GameObject;
 
 public class ContactManager {
     private World world;

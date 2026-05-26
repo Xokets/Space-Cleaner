@@ -1,4 +1,4 @@
-package src.ru.innovationcampus.vsu26.xokets.space_cleaner.screen;
+package src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -11,19 +11,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameState;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.ContactManager;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ButtonView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.ImageView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.LiveView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.MovingBackgroundView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.ButtonView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.ImageView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.LiveView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.MovingBackgroundView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.view.TextView;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.BulletObject;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.ShipObject;
-import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_object.TrashObject;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.TextView;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.BulletObject;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.ShipObject;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.TrashObject;
 
 public class ScreenGame extends ScreenAdapter {
     private final MyGdxGame myGdxGame;
@@ -71,17 +71,17 @@ public class ScreenGame extends ScreenAdapter {
         homeButton.setX((float) Settings.SCREEN_WIDTH / 2 - homeButton.getWidth() / 2);
         continueButton = new ButtonView(pauseTextView.getX(), homeButton.getY() - homeButton.getWidth() - 50, 150, 80, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Continue");
         continueButton.setX((float) Settings.SCREEN_WIDTH / 2 - continueButton.getWidth() / 2);
+        scoreTextView = new TextView(Settings.SCREEN_WIDTH - 400, Settings.SCREEN_HEIGHT - 60, myGdxGame.font1, "Count: " + point);
+        pauseButton = new ButtonView(0, 0, 40, 40, Resources.INTERFACE_BUTTON_PAUSE_INTERNAL_TEXTURE_PATH);
+        pauseButton.setX(Settings.SCREEN_WIDTH - pauseButton.getWidth() - 6);
+        pauseButton.setY(Settings.SCREEN_HEIGHT - pauseButton.getHeight() - 6);
     }
     @Override
     public void show() {
         restartGame();
         point = 0;
-        scoreTextView = new TextView(Settings.SCREEN_WIDTH - 400, Settings.SCREEN_HEIGHT - 60, myGdxGame.font1, "Count: " + point);
 
         ship.setBounce(Settings.SCREEN_WIDTH, (float) Settings.SCREEN_HEIGHT / 2, 0, 0);
-        pauseButton = new ButtonView(0, 0, 40, 40, Resources.INTERFACE_BUTTON_PAUSE_INTERNAL_TEXTURE_PATH);
-        pauseButton.setX(Settings.SCREEN_WIDTH - pauseButton.getWidth() - 6);
-        pauseButton.setY(Settings.SCREEN_HEIGHT - pauseButton.getHeight() - 6);
     }
 
     @Override
@@ -94,8 +94,9 @@ public class ScreenGame extends ScreenAdapter {
             myGdxGame.stepWorld(delta);
         }
         handleInput();
+        gameSession.updateScore();
+        scoreTextView.setText("Score: " + gameSession.getScore());
         draw();
-        scoreTextView.setText("Count: " + point);
     }
 
     @Override
@@ -203,15 +204,15 @@ public class ScreenGame extends ScreenAdapter {
     private void cleanObject() {
 
         if (!ship.isAlive()) {
-            System.out.println("Game over!");
             //FIXME
-            throw new RuntimeException("Game over");
+            myGdxGame.setScreen(myGdxGame.screenMenu);
         }
         for (int i = 0; i < trashArray.size(); i++) {
 
             boolean hasToBeDestroyed = !trashArray.get(i).isInFrame() || !trashArray.get(i).isAlive();
 
             if (!trashArray.get(i).isAlive()) {
+                gameSession.incrementDestroyedTrashCount();
                 if (myGdxGame.audioManager.isSoundOn) myGdxGame.audioManager.getExplosionSound().play(0.25f);
 
             }
