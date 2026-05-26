@@ -40,7 +40,18 @@ public class MemoryManager {
             return null;
         }
 
-        return new Json().fromJson(TreeSet.class, preferences.getString(RECORDS_TABLE));
+        Set<Integer> treeSet = new TreeSet<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer integer, Integer t1) {
+                if (t1 > integer) return 1;
+                else return -1;
+            };
+        });
+
+        Set<Integer> integerSet = new Json().fromJson(TreeSet.class, preferences.getString(RECORDS_TABLE));
+        if (integerSet == null) return new TreeSet<>();
+        treeSet.addAll(integerSet);
+        return treeSet;
     }
 
     public static void saveTableOfRecords(Collection<Integer> table) {

@@ -8,11 +8,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameState;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.MemoryManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.ButtonView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.ImageView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.LiveView;
@@ -45,6 +47,7 @@ public class ScreenGame extends ScreenAdapter {
 
     public ScreenGame(@NotNull MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
+
         gameSession = new GameSession();
         contactManager = new ContactManager(myGdxGame.world);
         ship = new ShipObject(
@@ -79,7 +82,6 @@ public class ScreenGame extends ScreenAdapter {
     @Override
     public void show() {
         restartGame();
-        point = 0;
 
         ship.setBounce(Settings.SCREEN_WIDTH, (float) Settings.SCREEN_HEIGHT / 2, 0, 0);
     }
@@ -205,6 +207,10 @@ public class ScreenGame extends ScreenAdapter {
 
         if (!ship.isAlive()) {
             //FIXME
+            gameSession.endGame();
+            for (int i : MemoryManager.loadRecordsTable()) {
+                System.out.println(i);
+            }
             myGdxGame.setScreen(myGdxGame.screenMenu);
         }
         for (int i = 0; i < trashArray.size(); i++) {

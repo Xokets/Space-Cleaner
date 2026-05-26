@@ -13,7 +13,9 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Random;
+import java.util.Set;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.MemoryManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens.ScreenGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens.ScreenMenu;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.screens.ScreenSettings;
@@ -49,6 +51,12 @@ public class MyGdxGame extends Game {
 		batch = new SpriteBatch();
 		setScreen(screenMenu);
 		audioManager = new AudioManager(world);
+
+		Set<Integer> integers = MemoryManager.loadRecordsTable();
+		if (integers == null) return;
+		for (int i : integers) {
+			System.out.println(i);
+		}
 	}
 
 	@Override

@@ -2,8 +2,12 @@ package src.ru.innovationcampus.vsu26.xokets.space_cleaner;
 
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class GameSession {
+import java.util.Set;
+import java.util.TreeSet;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.MemoryManager;
+
+public class GameSession {
     private long sessionTime;
     private long nextTrashSpawnTime;
     private GameState state;
@@ -57,5 +61,14 @@ public class GameSession {
 
     public int getScore() {
         return score;
+    }
+
+    public void endGame() {
+        updateScore();
+        state = GameState.ENDED;
+        Set<Integer> recordsTable = MemoryManager.loadRecordsTable();
+        recordsTable.add(getScore());
+        MemoryManager.saveTableOfRecords(recordsTable);
+
     }
 }
