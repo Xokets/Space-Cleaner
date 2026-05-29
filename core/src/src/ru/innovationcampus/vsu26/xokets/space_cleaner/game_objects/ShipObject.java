@@ -23,7 +23,7 @@ public class ShipObject extends GameObject {
     public ShipObject(@NotNull String texturePath, float width, float height, @NotNull World world) {
         super(texturePath, width, height, world, Settings.SHIP_BIT);
         body.setLinearDamping(20);
-        hitPoint = Resources.SHIP_HIT_POINT_COUNT;
+        hitPoint = Settings.SHIP_HIT_POINT_COUNT;
     }
 
     public void setBounce(float maxX, float maxY, float minX, float minY) {

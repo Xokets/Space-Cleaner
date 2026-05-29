@@ -8,10 +8,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.TreeSet;
+import java.util.concurrent.ThreadLocalRandom;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameState;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.PlanetObject;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.PlanetType;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.ContactManager;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.GameSession;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.MemoryManager;
@@ -22,6 +25,7 @@ import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.MovingBackground
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.RecordsListView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.views.TextView;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.BulletObject;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.ShipObject;
@@ -29,12 +33,25 @@ import src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects.TrashObje
 
 public class ScreenGame extends ScreenAdapter {
     private final MyGdxGame myGdxGame;
+
+
+    TextView recordsTextView;
+    RecordsListView recordsListView;
+    ButtonView homeButton2;
+
+
+    private MovingBackgroundView background;
     private ShipObject ship;
+
+
     private GameSession gameSession;
     private ContactManager contactManager;
+
+
     private final ArrayList<TrashObject> trashArray = new ArrayList<>();
     private final ArrayList<BulletObject> bulletArray = new ArrayList<>();
-    private MovingBackgroundView background;
+
+
     private ImageView topBlackOutView;
     private ImageView fullBlackOutView;
     private TextView scoreTextView;
@@ -43,22 +60,20 @@ public class ScreenGame extends ScreenAdapter {
     private ButtonView pauseButton;
     private ButtonView homeButton;
     private ButtonView continueButton;
-    private int point;
 
     public ScreenGame(@NotNull MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
-        gameSession = new GameSession();
         contactManager = new ContactManager(myGdxGame.world);
         ship = new ShipObject(
 
                 Resources.SHIP_INTERNAL_TEXTURE_PATH,
-                Resources.SHIP_WIDTH,
-                Resources.SHIP_HEIGHT,
+                Settings.SHIP_WIDTH,
+                Settings.SHIP_HEIGHT,
                 myGdxGame.world
 
         );
-        ship.setY((float) (Settings.SCREEN_HEIGHT / 2 - Resources.SHIP_HEIGHT / 2));
+        ship.setY((float) (Settings.SCREEN_HEIGHT / 2 - Settings.SHIP_HEIGHT / 2));
         ship.setX((float) Settings.SCREEN_WIDTH / 2);
         background = new MovingBackgroundView(Resources.BACKGROUND_INTERNAL_TEXTURE_PATH);
         topBlackOutView = new ImageView(0, 0, Settings.SCREEN_WIDTH, 50, Resources.BLACKOUT_TOP_INTERNAL_TEXTURE_PATH);
@@ -74,10 +89,20 @@ public class ScreenGame extends ScreenAdapter {
         homeButton.setX((float) Settings.SCREEN_WIDTH / 2 - homeButton.getWidth() / 2);
         continueButton = new ButtonView(pauseTextView.getX(), homeButton.getY() - homeButton.getWidth() - 50, 150, 80, Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH, myGdxGame.font1, "Continue");
         continueButton.setX((float) Settings.SCREEN_WIDTH / 2 - continueButton.getWidth() / 2);
-        scoreTextView = new TextView(Settings.SCREEN_WIDTH - 400, Settings.SCREEN_HEIGHT - 60, myGdxGame.font1, "Count: " + point);
+        scoreTextView = new TextView(Settings.SCREEN_WIDTH - 400, Settings.SCREEN_HEIGHT - 60, myGdxGame.font1, "Count: " + 0);
         pauseButton = new ButtonView(0, 0, 40, 40, Resources.INTERFACE_BUTTON_PAUSE_INTERNAL_TEXTURE_PATH);
         pauseButton.setX(Settings.SCREEN_WIDTH - pauseButton.getWidth() - 6);
         pauseButton.setY(Settings.SCREEN_HEIGHT - pauseButton.getHeight() - 6);
+        recordsListView = new RecordsListView(690, myGdxGame.font1);
+        recordsTextView = new TextView(0, 842, myGdxGame.font1, "Last records");
+        recordsTextView.setX((Settings.SCREEN_WIDTH - recordsTextView.getWidth()) / 2);
+        homeButton2 = new ButtonView(
+                280, 365,
+                160, 70,
+                Resources.INTERFACE_TEXT_BUTTON_BG_SHORT_INTERNAL_TEXTURE_PATH,
+                myGdxGame.font1,
+                "Home"
+        );
     }
     @Override
     public void show() {
@@ -98,6 +123,7 @@ public class ScreenGame extends ScreenAdapter {
         handleInput();
         gameSession.updateScore();
         scoreTextView.setText("Score: " + gameSession.getScore());
+        scoreTextView.setX((Settings.SCREEN_WIDTH - scoreTextView.getWidth()) / 2);
         draw();
     }
 
@@ -115,19 +141,15 @@ public class ScreenGame extends ScreenAdapter {
         continueButton.dispose();
         homeButton.dispose();
         pauseTextView.dispose();
+        homeButton2.dispose();
+        recordsTextView.dispose();
+        recordsListView.dispose();
     }
 
     private void handleInput() {
         if (Gdx.input.isTouched()) {
             Vector3 touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (touch.y >= 0 && touch.y <= (float) Settings.SCREEN_HEIGHT / 2) {
-                myGdxGame.touch = touch;
-            }
-
-            if (Gdx.input.justTouched()) {
-                myGdxGame.touch = touch;
-                return;
-            }
+            myGdxGame.touch = touch;
         }
         switch (gameSession.getState()) {
             case RUNNING:
@@ -143,6 +165,12 @@ public class ScreenGame extends ScreenAdapter {
                     gameSession.resume();
                 }
                 if (homeButton.isHit(myGdxGame.touch)) {
+                    myGdxGame.touch = null;
+                    myGdxGame.setScreen(myGdxGame.screenMenu);
+                }
+                break;
+            case ENDED:
+                if (homeButton2.isHit(myGdxGame.touch)) {
                     myGdxGame.touch = null;
                     myGdxGame.setScreen(myGdxGame.screenMenu);
                 }
@@ -168,25 +196,38 @@ public class ScreenGame extends ScreenAdapter {
             pauseTextView.draw(myGdxGame.batch);
             homeButton.draw(myGdxGame.batch);
             continueButton.draw(myGdxGame.batch);
+        } else if (gameSession.getState() == GameState.ENDED) {
+        fullBlackOutView.draw(myGdxGame.batch);
+        recordsTextView.draw(myGdxGame.batch);
+        recordsListView.draw(myGdxGame.batch);
+        homeButton2.draw(myGdxGame.batch);
         }
         myGdxGame.batch.end();
     }
 
     private void spawnObject() {
         if (gameSession.shouldSpawnTrash()) {
-            trashArray.add(new TrashObject(
 
-                    Settings.TRASH_INTERNAL_TEXTURE_PATH,
-                    Settings.TRASH_WIDTH,
-                    Settings.TRASH_HEIGHT,
-                    myGdxGame.world
+            if (ThreadLocalRandom.current().nextInt(6) > 1) {
+                trashArray.add(new TrashObject(
 
-            ));
+                        Resources.TRASH_INTERNAL_TEXTURE_PATH,
+                        Settings.TRASH_WIDTH,
+                        Settings.TRASH_HEIGHT,
+                        myGdxGame.world
+
+                ));
+            } else {
+                trashArray.add(new PlanetObject(
+
+                        myGdxGame.world,
+                        PlanetType.values()[ThreadLocalRandom.current().nextInt(PlanetType.values().length)]));
+            }
         }
         if (ship.needToShoot()) {
             bulletArray.add(new BulletObject(
 
-                    Settings.BULLET_INTERNAL_TEXTURE_PATH,
+                    Resources.BULLET_INTERNAL_TEXTURE_PATH,
                     Settings.BULLET_WIDTH,
                     Settings.BULLET_HEIGHT,
                     ship.getX(),
@@ -206,12 +247,8 @@ public class ScreenGame extends ScreenAdapter {
     private void cleanObject() {
 
         if (!ship.isAlive()) {
-            //FIXME
             gameSession.endGame();
-            for (int i : MemoryManager.loadRecordsTable()) {
-                System.out.println(i);
-            }
-            myGdxGame.setScreen(myGdxGame.screenMenu);
+            recordsListView.setRecords((TreeSet<Integer>) MemoryManager.loadRecordsTable());
         }
         for (int i = 0; i < trashArray.size(); i++) {
 
@@ -237,6 +274,8 @@ public class ScreenGame extends ScreenAdapter {
         }
     }
     private void restartGame() {
+        gameSession = new GameSession();
+        recordsListView.setText("");
         for (int i = 0; i < trashArray.size(); i++) {
             myGdxGame.world.destroyBody(trashArray.get(i).getBody());
             trashArray.get(i).dispose();
@@ -245,8 +284,8 @@ public class ScreenGame extends ScreenAdapter {
         if (ship != null) {
             myGdxGame.world.destroyBody(ship.getBody());
             ship.dispose();
-            ship = new ShipObject(Resources.SHIP_INTERNAL_TEXTURE_PATH, Resources.SHIP_WIDTH, Resources.SHIP_HEIGHT, myGdxGame.world);
-            ship.setY((float) (Settings.SCREEN_HEIGHT / 2 - Resources.SHIP_HEIGHT / 2));
+            ship = new ShipObject(Resources.SHIP_INTERNAL_TEXTURE_PATH, Settings.SHIP_WIDTH, Settings.SHIP_HEIGHT, myGdxGame.world);
+            ship.setY((float) (Settings.SCREEN_HEIGHT / 2 - Settings.SHIP_HEIGHT / 2));
             ship.setX((float) Settings.SCREEN_WIDTH / 2);
         }
         bulletArray.clear();

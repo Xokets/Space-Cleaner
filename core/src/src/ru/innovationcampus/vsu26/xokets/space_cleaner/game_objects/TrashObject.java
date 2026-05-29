@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 
 
@@ -21,6 +22,10 @@ public class TrashObject extends GameObject {
         setX(rand.nextFloat(PADDING_HORIZONTAL + width / 2, Settings.SCREEN_WIDTH - width / 2 - PADDING_HORIZONTAL));
         body.setLinearVelocity(new Vector2(0, -Settings.TRASH_VELOCITY));
         hitPoint = 1;
+    }
+
+    public TrashObject(@NotNull World world) {
+        this(Resources.TRASH_INTERNAL_TEXTURE_PATH, Settings.TRASH_WIDTH, Settings.TRASH_HEIGHT, world);
     }
 
     public boolean isInFrame() {

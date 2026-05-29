@@ -69,6 +69,5 @@ public class GameSession {
         Set<Integer> recordsTable = MemoryManager.loadRecordsTable();
         recordsTable.add(getScore());
         MemoryManager.saveTableOfRecords(recordsTable);
-
     }
 }

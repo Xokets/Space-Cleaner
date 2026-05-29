@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.List;
+
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.MyGdxGame;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.managers.MemoryManager;
@@ -68,7 +70,7 @@ public class ScreenSettings extends ScreenAdapter {
             myGdxGame.setScreen(myGdxGame.screenMenu);
         }
         if (clearRecords.isHit(myGdxGame.touch)) {
-            System.out.println("cleared records!");
+            MemoryManager.saveTableOfRecords(List.of());
         }
         if (musicCheckbox.isHit(myGdxGame.touch)) {
             MemoryManager.saveMusicSettings(!MemoryManager.loadIsMusicOn());

@@ -1,8 +1,19 @@
 package src.ru.innovationcampus.vsu26.xokets.space_cleaner;
 
 public class Settings {
-    public static final String TRASH_INTERNAL_TEXTURE_PATH = "Texture/Trash/trash.png";
-    public static final String BULLET_INTERNAL_TEXTURE_PATH = "Texture/Bullet/bullet.png";
+
+    public static final int MERCURY_RADIUS = 100;
+    public static final int VENUS_RADIUS = 220;
+    public static final int EARTH_RADIUS = 225;
+    public static final int MARS_RADIUS = 160;
+    public static final int JUPITER_RADIUS = 450;
+    public static final int SATURN_RADIUS = 350;
+    public static final int URANUS_RADIUS = 310;
+    public static final int NEPTUNE_RADIUS = 300;
+    public static final short RECORD_TABLE_ROWS_COUNT = 5;
+    public static final int SHIP_WIDTH = 100;
+    public static final int SHIP_HEIGHT = 100;
+    public static final short SHIP_HIT_POINT_COUNT = 3;
     public static final int SCREEN_WIDTH = 720;
     public static final int SCREEN_HEIGHT = 1280;
     public static final float FIXED_TIME_STEP = (float) 1/60;

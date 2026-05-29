@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class TextView extends View {
-    private BitmapFont font;
-    private String text;
+    protected BitmapFont font;
+    protected String text;
 
     public TextView(float x, float y, @NotNull BitmapFont font, @NotNull String text) {
         super(x, y);
@@ -43,5 +43,12 @@ public class TextView extends View {
         GlyphLayout glyphLayout = new GlyphLayout(font, text);
         width = glyphLayout.width;
         height = glyphLayout.height;
+    }
+
+    public String getText() {
+        return text;
+    }
+    public BitmapFont getFont() {
+        return font;
     }
 }

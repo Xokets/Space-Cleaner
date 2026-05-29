@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import org.jetbrains.annotations.NotNull;
 
+import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 
 
