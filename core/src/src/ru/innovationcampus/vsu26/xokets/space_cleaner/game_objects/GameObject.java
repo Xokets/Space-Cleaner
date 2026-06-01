@@ -38,6 +38,8 @@ public abstract class GameObject implements Disposable {
         this(texturePath, width, height, 0f, 0f, world, cBits);
     }
 
+    public GameObject() {}
+
     public void draw(@NotNull Batch batch) {
         batch.draw(texture, getX() - width / 2, getY() - height / 2, width, height);
     }
@@ -63,7 +65,7 @@ public abstract class GameObject implements Disposable {
         body.setTransform(body.getPosition().x, y * Settings.SCALE, 0);
     }
 
-    private Body createBody(float x, float y, World world) {
+    protected Body createBody(float x, float y, World world) {
         BodyDef def = new BodyDef();
 
         def.type = BodyDef.BodyType.DynamicBody;

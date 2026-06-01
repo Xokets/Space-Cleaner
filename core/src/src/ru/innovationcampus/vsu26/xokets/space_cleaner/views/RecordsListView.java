@@ -15,7 +15,7 @@ import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
 public class RecordsListView extends TextView {
 
     public RecordsListView(float y, @NotNull BitmapFont font) {
-        super(0, y, font, "");
+        super(0, y, font, " ");
     }
 
     public void setRecords(TreeSet<Integer> records) {
@@ -40,11 +40,6 @@ public class RecordsListView extends TextView {
     @Override
     public boolean isHit(@Nullable Vector3 vector3) {
         return super.isHit(vector3);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     @Override

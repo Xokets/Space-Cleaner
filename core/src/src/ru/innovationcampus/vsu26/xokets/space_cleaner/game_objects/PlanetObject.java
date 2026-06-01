@@ -1,11 +1,14 @@
 package src.ru.innovationcampus.vsu26.xokets.space_cleaner.game_objects;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Resources;
 import src.ru.innovationcampus.vsu26.xokets.space_cleaner.Settings;
@@ -14,7 +17,7 @@ public class PlanetObject extends TrashObject {
 
     private PlanetType type;
     public PlanetObject(@NotNull World world, PlanetType planetType) {
-        super(world);
+        super();
         type = planetType;
         switch (type) {
             case EARTH:
@@ -58,6 +61,34 @@ public class PlanetObject extends TrashObject {
                 height = Settings.URANUS_RADIUS;
                 break;
         }
+        body = createBody(0, 0, world);
+        body.setLinearDamping(-4.6f);
+        setTargetPosition(-Settings.TRASH_VELOCITY);
+    }
+
+    @Override
+    protected Body createBody(float x, float y, World world) {
+        BodyDef def = new BodyDef();
+
+        def.type = BodyDef.BodyType.DynamicBody;
+        def.fixedRotation = true;
+        Body body = world.createBody(def);
+
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(Math.max(width, height) * Settings.SCALE / 2f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.density = 0.3f;
+        fixtureDef.friction = 0.5f;
+
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
+        fixture.getFilterData().categoryBits = cBits;
+        circleShape.dispose();
+
+        body.setTransform(x * Settings.SCALE, y * Settings.SCALE, 0f);
+        return body;
     }
 
     @Override

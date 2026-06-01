@@ -1,6 +1,8 @@
 package src.ru.innovationcampus.vsu26.xokets.space_cleaner;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,6 +13,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Random;
 import java.util.Set;
@@ -24,6 +29,7 @@ import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.FontBuilder;
 
 public class MyGdxGame extends Game {
 	public World world;
+	private Viewport viewport;
 	public OrthographicCamera camera;
 	public Batch batch;
 	public Screen screenGame;
@@ -39,6 +45,7 @@ public class MyGdxGame extends Game {
 	@Override
 	public void create() {
 		Box2D.init();
+		Gdx.app.getType();
 		font1 = FontBuilder.generate(24, Color.WHITE, Resources.FONT1_INTERNAL_PATH);
 		font1Black = FontBuilder.generate(24, Color.BLACK, Resources.FONT1_INTERNAL_PATH);
 		font1Large = FontBuilder.generate(48, Color.WHITE, Resources.FONT1_INTERNAL_PATH);
@@ -51,6 +58,9 @@ public class MyGdxGame extends Game {
 		batch = new SpriteBatch();
 		setScreen(screenMenu);
 		audioManager = new AudioManager(world);
+
+		viewport = new FitViewport(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT, camera);
+//		viewport.apply();
 
 		Set<Integer> integers = MemoryManager.loadRecordsTable();
 		if (integers == null) return;

@@ -18,14 +18,12 @@ public class TrashObject extends GameObject {
 
     public TrashObject(@NotNull String texturePath, float width, float height, @NotNull World world) {
         super(texturePath, width, height, world, Settings.TRASH_BIT);
-        setY(Settings.SCREEN_HEIGHT + height / 2 + PADDING_HORIZONTAL);
-        setX(rand.nextFloat(PADDING_HORIZONTAL + width / 2, Settings.SCREEN_WIDTH - width / 2 - PADDING_HORIZONTAL));
-        body.setLinearVelocity(new Vector2(0, -Settings.TRASH_VELOCITY));
+        setTargetPosition(-Settings.TRASH_VELOCITY);
         hitPoint = 1;
     }
-
-    public TrashObject(@NotNull World world) {
-        this(Resources.TRASH_INTERNAL_TEXTURE_PATH, Settings.TRASH_WIDTH, Settings.TRASH_HEIGHT, world);
+    protected TrashObject() {
+        hitPoint = 1;
+        cBits = Settings.TRASH_BIT;
     }
 
     public boolean isInFrame() {
@@ -34,10 +32,16 @@ public class TrashObject extends GameObject {
 
     @Override
     public void hit() {
-        hitPoint -= 1;
+        hitPoint--;
     }
 
     public boolean isAlive() {
         return hitPoint > 0;
+    }
+
+    protected void setTargetPosition(float velocity) {
+        setY(Settings.SCREEN_HEIGHT + height / 2 + PADDING_HORIZONTAL);
+        setX(width / 2 + PADDING_HORIZONTAL + (rand.nextInt((int) (Settings.SCREEN_WIDTH - 2 * PADDING_HORIZONTAL - width))));
+        body.setLinearVelocity(new Vector2(0, velocity));
     }
 }
