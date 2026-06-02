@@ -29,7 +29,6 @@ import src.ru.innovationcampus.vsu26.xokets.space_cleaner.utils.FontBuilder;
 
 public class MyGdxGame extends Game {
 	public World world;
-	private Viewport viewport;
 	public OrthographicCamera camera;
 	public Batch batch;
 	public Screen screenGame;
@@ -58,9 +57,6 @@ public class MyGdxGame extends Game {
 		batch = new SpriteBatch();
 		setScreen(screenMenu);
 		audioManager = new AudioManager(world);
-
-		viewport = new FitViewport(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT, camera);
-//		viewport.apply();
 
 		Set<Integer> integers = MemoryManager.loadRecordsTable();
 		if (integers == null) return;
